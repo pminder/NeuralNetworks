@@ -7,6 +7,7 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	cout << "Hello World!" << endl;
+	DataLoader dataLoader;
+	dataLoader.load();
 	return 0;
 }
