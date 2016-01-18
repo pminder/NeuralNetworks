@@ -9,7 +9,14 @@ using namespace std ;
 
 int main(int argc, char const *argv[])
 {
-	DataMnist database;
+	//Check number of arguments
+	if (argc != 2)
+	{
+		cerr << "Pass MNIST database directory as argument" << endl;
+		return EXIT_FAILURE;
+	}
+	
+	DataMnist database(argv[1]);
 
 	//Test of data.loadLabels
 	//We only load the test labels (10 000) 
@@ -30,5 +37,7 @@ int main(int argc, char const *argv[])
 	{
 		cout << database.testImagesPixels(0,j) << endl;
 	}
+
+	//For windows :)
 	cin.get();
 }

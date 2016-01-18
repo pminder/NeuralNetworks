@@ -68,7 +68,7 @@ int DataMnist::loadImages(int beg)
 	{
 		//The ios::binary parameters is very important here 
 		//(without it the data we get is all zeros)
-		ifstream file ( path + images_file_names[k], ios::binary);
+		ifstream file ( (path + images_file_names[k]).c_str(), ios::binary);
 
 		//test to be sure that the file is open
 		if (file.is_open())
@@ -105,7 +105,7 @@ int DataMnist::loadImages(int beg)
 			std::cout << number_of_cols << endl;
 
 			//Storing the data
-			vector <vector <double>> data_vector;
+			vector <vector <double> > data_vector;
 			for (int i = 0; i < number_of_images; ++i)
 				{
 					vector <double> temporary_vector;
@@ -157,7 +157,7 @@ int DataMnist :: loadLabels(int beg)
 	//As we only load one file
 	for (int k = beg; k < 2; ++k)
 	{
-		ifstream file ( path + labels_file_names[k], ios::binary);
+		ifstream file ( (path + labels_file_names[k]).c_str(), ios::binary);
 
 	//test to be sure that the file is open
 		if (file.is_open())
@@ -200,12 +200,12 @@ return 0;
 }
 
 //Accessors
-vector <vector <double>> DataMnist::getTestImages()
+vector <vector <double> > DataMnist::getTestImages()
 {
 	return xtest ;
 }
 
-vector <vector <double>> DataMnist::getTrainImages(void)
+vector <vector <double> > DataMnist::getTrainImages(void)
 {
 	return xtrain ;
 }
