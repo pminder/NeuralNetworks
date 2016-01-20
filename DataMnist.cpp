@@ -20,10 +20,10 @@ DataMnist::DataMnist(void)
 DataMnist::DataMnist(std::string data_path)
 {
 	path = data_path;
-	images_file_names.push_back("train-images.idx3-ubyte");
-	images_file_names.push_back("t10k-images.idx3-ubyte");
-	labels_file_names.push_back("train-labels.idx1-ubyte");
-	labels_file_names.push_back("t10k-labels.idx1-ubyte");
+	images_file_names.push_back("train-images-idx3-ubyte");
+	images_file_names.push_back("t10k-images-idx3-ubyte");
+	labels_file_names.push_back("train-labels-idx1-ubyte");
+	labels_file_names.push_back("t10k-labels-idx1-ubyte");
 }
 
 
@@ -68,6 +68,8 @@ int DataMnist::loadImages(int beg)
 	{
 		//The ios::binary parameters is very important here 
 		//(without it the data we get is all zeros)
+
+		
 		ifstream file ( (path + images_file_names[k]).c_str(), ios::binary);
 
 		//test to be sure that the file is open
@@ -76,6 +78,8 @@ int DataMnist::loadImages(int beg)
 			cerr << "Could not open file" << endl;
 			return 1;
 		}
+
+		
 
 
 		//We initialize variables to unload the header variables of the MNIST database
@@ -92,7 +96,7 @@ int DataMnist::loadImages(int beg)
 		//The method fstream::read() works serially : 
 		//Once we call it on a file, the next time we will call it on that same file
 		//it will continue unloading the data where we it stopped the time before  
-		file.read((char*)&magic_nSumber,sizeof(magic_number)); 
+		file.read((char*)&magic_number,sizeof(magic_number)); 
 		file.read((char*)&number_of_images,sizeof(number_of_images));
 		file.read((char*)&number_of_rows,sizeof(number_of_rows));
 		file.read((char*)&number_of_cols,sizeof(number_of_cols));
@@ -161,41 +165,45 @@ int DataMnist :: loadLabels(int beg)
 		ifstream file ( (path + labels_file_names[k]).c_str(), ios::binary);
 
 	//test to be sure that the file is open
-		if (file.is_open())
+		if (!file.is_open())
 		{
-			//We initialize variables to unload the header variables of the MNIST database
-			//magic_number is useless, but we need to unload it to keep going in the data (cf next commentary) 
-			int magic_number = 0;
-			int number_of_items = 0;
-
-			file.read((char*)&magic_number,sizeof(magic_number)); 
-			file.read((char*)&number_of_items,sizeof(number_of_items));
-
-			//Convert out high endian ints into low endian ints
-			number_of_items = highEndianLowEndian(number_of_items);
-			cout << "Number of labels =" << endl;
-			cout << number_of_items << endl;
-
-			//Storing the data
-			vector <int> data_vector;
-			for (int i = 0; i < number_of_items; ++i)
-			{
-				unsigned char temporary = 0;
-				file.read((char*)&temporary,sizeof(temporary));
-				data_vector.push_back((int)temporary);
-			}
-
-			//We fill the class attributes with the data
-			if (k == 0) 
-			{
-				ytrain = data_vector ; 
-			}
-			else 
-			{
-				ytest = data_vector ;
-			}
-			cout << "Labels loaded successfully" << endl;
+			cerr << "Could not open file" << endl;
+			return 1;
 		}
+
+		//We initialize variables to unload the header variables of the MNIST database
+		//magic_number is useless, but we need to unload it to keep going in the data (cf next commentary) 
+		int magic_number = 0;
+		int number_of_items = 0;
+
+		file.read((char*)&magic_number,sizeof(magic_number)); 
+		file.read((char*)&number_of_items,sizeof(number_of_items));
+
+		//Convert out high endian ints into low endian ints
+		number_of_items = highEndianLowEndian(number_of_items);
+		cout << "Number of labels =" << endl;
+		cout << number_of_items << endl;
+
+		//Storing the data
+		vector <int> data_vector;
+		for (int i = 0; i < number_of_items; ++i)
+		{
+			unsigned char temporary = 0;
+			file.read((char*)&temporary,sizeof(temporary));
+			data_vector.push_back((int)temporary);
+		}
+
+		//We fill the class attributes with the data
+		if (k == 0) 
+		{
+			ytrain = data_vector ; 
+		}
+		else 
+		{
+			ytest = data_vector ;
+		}
+		cout << "Labels loaded successfully" << endl;
+
 	}
 return 0;
 }

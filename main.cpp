@@ -21,7 +21,11 @@ int main(int argc, char const *argv[])
 	//We only load the test labels (10 000) 
 	//to save time (this is just a test)
 	cout << "Test of labels" << endl;
-	database.loadLabels(1);
+	if (database.loadLabels(1) == 1)
+	{
+		return EXIT_FAILURE;
+	}
+
 	//We display the first 10 to see if the data has the right form
 	for (int j = 0; j<10; ++j)
 	{ 
