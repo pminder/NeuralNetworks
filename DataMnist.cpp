@@ -71,73 +71,74 @@ int DataMnist::loadImages(int beg)
 		ifstream file ( (path + images_file_names[k]).c_str(), ios::binary);
 
 		//test to be sure that the file is open
-		if (file.is_open())
+		if (!file.is_open())
 		{
-			//We initialize variables to unload the header variables of the MNIST database
-			//magic_number is useless, but we need to unload it to keep going in the data (cf next commentary) 
-			int magic_number = 0;
-			int number_of_images = 0;
-			int number_of_rows = 0;
-			int number_of_cols = 0;
+			cerr << "Could not open file" << endl;
+			return 1;
+		}
 
-			//The method fstream::read() takes two parameters : 
-			//		- a pointer to an array of char where the characters are stored 
-			//      (thus we cast &magic_number as a char* for instance)
-			//		- the number of character it should extract
-			//The method fstream::read() works serially : 
-			//Once we call it on a file, the next time we will call it on that same file
-			//it will continue unloading the data where we it stopped the time before  
-			file.read((char*)&magic_number,sizeof(magic_number)); 
-			file.read((char*)&number_of_images,sizeof(number_of_images));
-			file.read((char*)&number_of_rows,sizeof(number_of_rows));
-			file.read((char*)&number_of_cols,sizeof(number_of_cols));
 
-			//Convert out high endian ints into low endian ints
-			//Display the values
-			number_of_images = highEndianLowEndian(number_of_images);
-			cout << "Number of images =" << endl;
-			cout << number_of_images << endl;
-			number_of_rows = highEndianLowEndian(number_of_rows);
-			cout << "Number of rows in an image =" << endl;
-			std::cout << number_of_rows << std::endl;
-			number_of_cols = highEndianLowEndian(number_of_cols);
-			cout << "Number of columns in an image =" << endl;
-			std::cout << number_of_cols << endl;
+		//We initialize variables to unload the header variables of the MNIST database
+		//magic_number is useless, but we need to unload it to keep going in the data (cf next commentary) 
+		int magic_number = 0;
+		int number_of_images = 0;
+		int number_of_rows = 0;
+		int number_of_cols = 0;
 
-			//Storing the data
-			vector <vector <double> > data_vector;
-			for (int i = 0; i < number_of_images; ++i)
+		//The method fstream::read() takes two parameters : 
+		//		- a pointer to an array of char where the characters are stored 
+		//      (thus we cast &magic_number as a char* for instance)
+		//		- the number of character it should extract
+		//The method fstream::read() works serially : 
+		//Once we call it on a file, the next time we will call it on that same file
+		//it will continue unloading the data where we it stopped the time before  
+		file.read((char*)&magic_nSumber,sizeof(magic_number)); 
+		file.read((char*)&number_of_images,sizeof(number_of_images));
+		file.read((char*)&number_of_rows,sizeof(number_of_rows));
+		file.read((char*)&number_of_cols,sizeof(number_of_cols));
+
+		//Convert out high endian ints into low endian ints
+		//Display the values
+		number_of_images = highEndianLowEndian(number_of_images);
+		cout << "Number of images = " << number_of_images << endl;
+		number_of_rows = highEndianLowEndian(number_of_rows);
+		cout << "Number of rows in an image = " <<  number_of_rows << std::endl;
+		number_of_cols = highEndianLowEndian(number_of_cols);
+		cout << "Number of columns in an image = " <<  number_of_cols << endl;
+
+		//Storing the data
+		vector <vector <double> > data_vector;
+		for (int i = 0; i < number_of_images; ++i)
+			{
+				vector <double> temporary_vector;
+				for(int r = 0; r < number_of_rows; ++r)
 				{
-					vector <double> temporary_vector;
-					for(int r = 0; r < number_of_rows; ++r)
+					for(int c = 0; c < number_of_cols; ++c)
 					{
-						for(int c = 0; c < number_of_cols; ++c)
-						{
-							//In the structure of the MNIST database,
-							//pixels are unsigned bytes which can be interpreted as numbers
-							//describing the nuance of black of the pixel.
-							//As the file.read method needs a pointer to a character
-							//to store the data, we create an unsigned char (value between 0 and 255) 
-							//instead of a char (value between -127 and 128)
-							//it does not matter since they both correspond to a byte memorywise
-							unsigned char pix = 0;
-							file.read((char*)&pix,sizeof(pix));
-							temporary_vector.push_back((double) pix);
-						}
+						//In the structure of the MNIST database,
+						//pixels are unsigned bytes which can be interpreted as numbers
+						//describing the nuance of black of the pixel.
+						//As the file.read method needs a pointer to a character
+						//to store the data, we create an unsigned char (value between 0 and 255) 
+						//instead of a char (value between -127 and 128)
+						//it does not matter since they both correspond to a byte memorywise
+						char pix = 0;
+						file.read(&pix,sizeof(pix));
+						temporary_vector.push_back((double) pix);
 					}
-					data_vector.push_back(temporary_vector);
 				}
-				//We fill the class attributes with the data
-				if (k == 0) 
-				{
-					xtrain = data_vector ; 
-				}
-				else 
-				{
-					xtest = data_vector ;
-				}
-				cout << "Images loaded successfully" << endl;
+				data_vector.push_back(temporary_vector);
 			}
+			//We fill the class attributes with the data
+			if (k == 0) 
+			{
+				xtrain = data_vector ; 
+			}
+			else 
+			{
+				xtest = data_vector ;
+			}
+			cout << "Images loaded successfully" << endl;
 		}
 	return 0;
 }
