@@ -4,6 +4,8 @@
 #include <vector>
 #include <valarray>
 
+#include "layer.h" 
+
 class Network
 {
 public:
@@ -22,7 +24,12 @@ public:
 	//Attention, Y est constitué de char (et non de ints). C'est suffisant
 	//car on ne dépasse pas 9... Mais cela pourrait nous induire en erreur?
 	void train(std::vector< std::valarray<float> > const& X, std::vector<char> const& Y);
+
+private:
+    //Vector of pointers to layers
+    std::vector<Layer *> _layers;
 	
 };
+
 
 #endif

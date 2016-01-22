@@ -20,10 +20,10 @@ DataMnist::DataMnist(void)
 DataMnist::DataMnist(std::string data_path)
 {
 	path = data_path;
-	images_file_names.push_back("train-images-idx3-ubyte");
-	images_file_names.push_back("t10k-images-idx3-ubyte");
-	labels_file_names.push_back("train-labels-idx1-ubyte");
-	labels_file_names.push_back("t10k-labels-idx1-ubyte");
+	images_file_names.push_back("train-images.idx3-ubyte");
+	images_file_names.push_back("t10k-images.idx3-ubyte");
+	labels_file_names.push_back("train-labels.idx1-ubyte");
+	labels_file_names.push_back("t10k-labels.idx1-ubyte");
 }
 
 
@@ -181,8 +181,7 @@ int DataMnist :: loadLabels(int beg)
 
 		//Convert out high endian ints into low endian ints
 		number_of_items = highEndianLowEndian(number_of_items);
-		cout << "Number of labels =" << endl;
-		cout << number_of_items << endl;
+		cout << "Number of labels = " << number_of_items << endl;
 
 		//Storing the data
 		vector <int> data_vector;

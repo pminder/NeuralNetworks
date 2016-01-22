@@ -2,6 +2,7 @@
 #define FUNCTIONS_H 
 
 #include <string>
+#include <math>
 
 //Classe abstraite Fonction
 class Function
@@ -11,9 +12,9 @@ public:
 	virtual ~Function();
 
 	//Fonction de base
-	virtual float fnt(float x) const = 0;
+	virtual double fnt(double x) const = 0;
 	//Dérivée
-	virtual float prime(float x) const = 0;
+	virtual double prime(double x) const = 0;
 
 protected:
 	//Nom de la fonction (pour l'affichage)
@@ -29,8 +30,8 @@ public:
 	Sigmoid();
 	~Sigmoid();
 
-	virtual float fnt(float x) const;
-	virtual float prime(float x) const;
+	virtual double fnt(double x) const;
+	virtual double prime(double x) const;
 	
 };
 

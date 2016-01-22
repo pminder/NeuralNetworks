@@ -22,14 +22,12 @@ Sigmoid::~Sigmoid()
 }
 
 
-float Sigmoid::fnt(float x) const
+double Sigmoid::fnt(double x) const
 {
-	return 0;
-
+    1./(1 + exp(-x));
 }
 
-float Sigmoid::prime(float x) const
+double Sigmoid::prime(double x) const
 {
-	return 0;
-
+    exp(-x)/((1 + exp(-x))*(1 + exp(-x)));
 }

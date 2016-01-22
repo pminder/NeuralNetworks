@@ -1,8 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <gsl/gsl_matrix.h>
 
 #include "DataMnist.h"
+#include "layer.h"
+#include "network.h"
 
 using namespace std ;
 
@@ -12,34 +17,34 @@ int main(int argc, char const *argv[])
 	if (argc != 2)
 	{
 		cerr << "Pass MNIST database directory as argument" << endl;
-		return EXIT_FAILURE;
+		return 1;
 	}
-	
+
+//    //Test if allocation and destruction of Network works
+//    vector<int> sizes(3);
+//    sizes[0] = 200;
+//    sizes[1] = 30;
+//    sizes[2] = 10;
+//
+//    Network network(sizes);
+//    Layer * p_layer = network._layers[0];
+//    gsl_matrix * matrix = (*p_layer)._weights;
+//    gsl_matrix_fprintf(stdout, matrix, "%f");
+    
+
+    return 0;
+   //Create dataloader instance
 	DataMnist database(argv[1]);
-
-	//Test of data.loadLabels
-	//We only load the test labels (10 000) 
-	//to save time (this is just a test)
-	cout << "Test of labels" << endl;
-	if (database.loadLabels(1) == 1)
+    //Load labels
+	if (database.loadLabels(0) == 1)
 	{
-		return EXIT_FAILURE;
+		return 1;
 	}
-
-	//We display the first 10 to see if the data has the right form
-	for (int j = 0; j<10; ++j)
-	{ 
-		cout << database.testLabels(j) << endl;
-	}
-
-
-	//Test of data.loadImages
-	cout << "Test of images" << endl;
-	database.loadImages(1);
-	for (int j = 0; j < 784; j++)
-	{
-		cout << database.testImagesPixels(0,j) << endl;
-	}
+    //Load images
+    if (database.loadImages(0) == 1)
+    {
+        return 1;
+    }
 
 	//For windows :)
 	cin.get();
