@@ -40,3 +40,10 @@ void Layer::InitLayer()
         }
     }
 }
+
+
+//TODO
+gsl_vector * Layer::FeedForward(gsl_vector * input)
+{
+    return ???;
+}

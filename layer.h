@@ -15,6 +15,8 @@ class Layer
         //Destructor:
         //DO NOT FORGET TO FREE MEMORY
         ~Layer();
+        //Feef forward step
+        gsl_vector * FeedForward(gsl_vector * input);
 
     private:
         //Attributes

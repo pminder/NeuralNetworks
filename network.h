@@ -28,6 +28,8 @@ public:
 private:
     //Vector of pointers to layers
     std::vector<Layer *> _layers;
+    //Sizes of layers
+    vector<int> _sizes;
 	
 };
 
