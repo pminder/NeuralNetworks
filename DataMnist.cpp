@@ -7,6 +7,7 @@
 #include "DataMnist.h"
 
 using namespace std;
+using namespace Eigen;
 
 DataMnist::DataMnist(void)
 {
@@ -249,4 +250,12 @@ Eigen::VectorXd DataMnist::testImage (int i)
 	return _xtest[i];
 }
 
-;
+vector<VectorXd> DataMnist::GetTrainImages()
+{
+    return _xtrain;
+}
+
+vector<int> DataMnist::GetTrainLabels()
+{
+    return _ytrain;
+}

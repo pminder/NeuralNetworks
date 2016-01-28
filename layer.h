@@ -18,9 +18,24 @@ class Layer
         //Feed forward step
         void FeedForward(Eigen::VectorXd const& input);
 
+        //Feed backward for last layer
+        void FeedBackward(Eigen::VectorXd delta);
+        //Feed backward for hidden layers
+        void FeedBackward(Eigen::MatrixXd w, Eigen::VectorXd delta);
+        //Compute _nabla_w and _nabla_b
+        void ComputeNabla(Eigen::VectorXd activations);
+        //Set all values of _nabla_w and _nabla_b to 0
+        void CleanNabla();
+
+        //Update weights and biases
+        void UpdateWeightsBiases(double eta, int miniBatchSize);
+
+
         //Accessors
         //(OPTIMIZATION: do not copy ?)
         Eigen::VectorXd GetActivation();
+        Eigen::VectorXd GetWeights();
+        Eigen::VectorXd GetDelta();
 
     private:
         //Attributes
@@ -34,7 +49,12 @@ class Layer
         Eigen::VectorXd _weightedInput;
         //Layer activation
         Eigen::VectorXd _activation;
-
+        //intermediate value useful for calcultaions
+        Eigen::VectorXd _delta;
+        //Sum of nabla_b
+        Eigen::VectorXd _nabla_b;
+        //Sum of nabla_w
+        Eigen::VectorXd _nabla_w;
         //Activation function
         Function * _activationFunction;
 

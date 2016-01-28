@@ -43,6 +43,9 @@ public:
 	Eigen::VectorXd trainImage (int);
 
 	Eigen::VectorXd testImage (int);
+
+    std::vector<Eigen::VectorXd> GetTrainImages();
+    std::vector<int> GetTrainLabels();
 	
 
 

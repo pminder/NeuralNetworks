@@ -2,7 +2,6 @@
 #define NETWORK_H
 
 #include <vector>
-#include <valarray>
 #include <Eigen/Dense>
 
 #include "layer.h" 
@@ -19,7 +18,15 @@ public:
 	int Predict(Eigen::VectorXd const& X);
 
 	//Fonction d'apprentissage
-	void train(std::vector< Eigen::VectorXd>  const& X, std::vector<int> const& Y);
+	void Train(std::vector< Eigen::VectorXd>  const& X, std::vector<int> const& Y,
+            int epochs = 30, int miniBatchSize = 10, double eta = 3.0);
+
+    //Update weights and biases using specified minibatch
+    void UpdateMiniBatch(std::vector<Eigen::VectorXd> x, std::vector<int> y, double eta);
+
+    //Compute first value used in back propagation algorithm
+    Eigen::VectorXd InitBackProp(int y, Eigen::VectorXd activations);
+
 
 private:
     //Vector of pointers to layers
