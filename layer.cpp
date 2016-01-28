@@ -1,49 +1,63 @@
-#include "layer.h"
 #include <random>
 #include <iostream>
 
-using namespace std;
+#include "layer.h"
 
-Layer::Layer(int const nNeurons, int const nInput)
+using namespace std;
+using namespace Eigen;
+
+Layer::Layer(int nNeurons, int nInput)
 {
     //Store nNeurons and nInput
     _nNeurons = nNeurons;
     _nInput = nInput;
-    //Allocate biases
-    _biases = gsl_vector_calloc(_nInput);
-    _weights = gsl_matrix_calloc(_nNeurons, _nInput);
+    //Allocate attributes
+    _biases = VectorXd(_nNeurons);
+    _weights = MatrixXd(_nNeurons, _nInput);
+    _weightedInput = VectorXd(_nNeurons);
+    _activation = VectorXd(_nNeurons);
+    //Activation function creation
+    _activationFunction = new Sigmoid;
 
-    InitLayer();
+    //Initialize weights and biases using random normal distribution
+    InitWeightsBiases();
     
 }
 
 Layer::~Layer()
-    //Let's not forget to free memory :)
 {
-    gsl_vector_free(_biases);
-    gsl_matrix_free(_weights);
 }
 
-void Layer::InitLayer()
+void Layer::InitWeightsBiases()
 {
     //Initialize random number generator
     default_random_engine generator;
     normal_distribution<double> distribution(0.0,1.0);
     //Fill biases
-    for (int i = 0; i < _nInput; ++i) {
-        gsl_vector_set(_biases, i, distribution(generator));
+    for (int i = 0; i < _nNeurons; ++i) {
+        _biases(i) = distribution(generator);
     }
     //Fill weights
     for (int i = 0; i < _nNeurons; ++i) {
         for (int j = 0; j < _nInput; ++j) {
-            gsl_matrix_set(_weights, i, j, distribution(generator));
+            _weights(i, j) = distribution(generator);
         }
     }
 }
 
 
-//TODO
-gsl_vector * Layer::FeedForward(gsl_vector * input)
+void Layer::FeedForward(VectorXd const& input)
 {
-    return ???;
+    //Compute weighted inputs for this layer
+    _weightedInput = _weights * input + _biases;
+    //Compute activation for this layer
+    for (int i = 0; i < _nNeurons; ++i) {
+        _activation(i) = _activationFunction->fnt(_weightedInput(i));
+    }
+
+}
+
+VectorXd Layer::GetActivation()
+{
+    return _activation;
 }

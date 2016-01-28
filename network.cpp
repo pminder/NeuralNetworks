@@ -1,6 +1,8 @@
+#include <iostream>
 #include "network.h"
 
 using namespace std;
+using namespace Eigen;
 
 Network::Network(vector<int> const& sizes)
 {
@@ -24,35 +26,31 @@ Network::~Network()
 
 }
 
-gsl_vector * Network::Predict(int rawInput[])
+int Network::Predict(VectorXd const& X)
 {
-    gsl_vector * p_input;
-    gsl_vector * p_output;
+    int label(-1);
 
-    //Create fisrt input vector
-    p_input = gsl_vector_calloc(_sizes[0]);
-    //Copy data into vector
-    for (int i = 0; i < _sizes[0]; ++i) {
-        gsl_vector_set(p_input, i, rawInput[i]);
+    //Feedforward X in first layer
+    _layers[0]->FeedForward(X);
+    //For all other layers
+    for (int i= 1; i< _layers.size(); ++i) {
+        _layers[i]->FeedForward(_layers[i-1]->GetActivation());
     }
 
-    for (int i = 0; i < _layers.size(); ++i) {
-        p_output = _layers[i].FeedForward(p_input);
-        gsl_vector_free(p_input);
-        p_input = p_output;
-    }
-
-    return p_output;
+    //Get label with highest probabilty
+    (_layers[_layers.size()-1]->GetActivation()).maxCoeff(&label);
+    //Return number with label with highest probability
+    return label;
 }
 
 //IDEE : surcharge d'opérateur pour gérer les cas où l'on passe 
 //une ou plusieurs images à predict...
-void Network::predict(vector< valarray<float> > const& X)
-{
+//void Network::predict(vector< Eigen::VectorXd>  const& X)
+//{
+//
+//}
 
-}
-
-void Network::train(vector< valarray<float> > const& X, vector<char> const& Y)
+void Network::train(vector< Eigen::VectorXd> const& X, vector<int> const& Y)
 {
 
 }

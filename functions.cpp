@@ -24,10 +24,10 @@ Sigmoid::~Sigmoid()
 
 double Sigmoid::fnt(double x) const
 {
-    1./(1 + exp(-x));
+    return 1./(1 + exp(-x));
 }
 
 double Sigmoid::prime(double x) const
 {
-    exp(-x)/((1 + exp(-x))*(1 + exp(-x)));
+    return exp(-x)/((1 + exp(-x))*(1 + exp(-x)));
 }

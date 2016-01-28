@@ -2,7 +2,7 @@
 #define FUNCTIONS_H 
 
 #include <string>
-#include <math>
+#include <math.h>
 
 //Classe abstraite Fonction
 class Function

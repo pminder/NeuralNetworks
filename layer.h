@@ -1,7 +1,8 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include <gsl/gsl_matrix.h>
+#include <Eigen/Dense>
+#include "functions.h"
 
 class Layer
 {
@@ -10,23 +11,35 @@ class Layer
         //args:
         //  - nNeurons: number of neurons in layer
         //  - nInput: number of neurons in previous layer
-        Layer(int const nNeurons, int const nInput);
+        Layer(int nNeurons, int nInput);
 
         //Destructor:
-        //DO NOT FORGET TO FREE MEMORY
         ~Layer();
-        //Feef forward step
-        gsl_vector * FeedForward(gsl_vector * input);
+        //Feed forward step
+        void FeedForward(Eigen::VectorXd const& input);
+
+        //Accessors
+        //(OPTIMIZATION: do not copy ?)
+        Eigen::VectorXd GetActivation();
 
     private:
         //Attributes
         int _nNeurons;
         int _nInput;
-        gsl_matrix * _weights;
-        gsl_vector * _biases;
+        //Weights
+        Eigen::MatrixXd  _weights;
+        //Biases
+        Eigen::VectorXd _biases;
+        //Weighted input
+        Eigen::VectorXd _weightedInput;
+        //Layer activation
+        Eigen::VectorXd _activation;
+
+        //Activation function
+        Function * _activationFunction;
 
         //Initialize weights and biaises
-        void InitLayer();
+        void InitWeightsBiases();
 
 };
 

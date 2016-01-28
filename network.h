@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <valarray>
+#include <Eigen/Dense>
 
 #include "layer.h" 
 
@@ -14,22 +15,17 @@ public:
 	//Destructeur
 	~Network();
 
-	//Fonction de classification
-	//Pour l'instant la matrice X est un tableau de valarrays
-	//(valarray étant un type approprié en C++ pour des opérations
-	//vectorielles)
-	void predict(std::vector< std::valarray<float> > const& X);
+	//Fonction de classification pour une image
+	int Predict(Eigen::VectorXd const& X);
 
 	//Fonction d'apprentissage
-	//Attention, Y est constitué de char (et non de ints). C'est suffisant
-	//car on ne dépasse pas 9... Mais cela pourrait nous induire en erreur?
-	void train(std::vector< std::valarray<float> > const& X, std::vector<char> const& Y);
+	void train(std::vector< Eigen::VectorXd>  const& X, std::vector<int> const& Y);
 
 private:
     //Vector of pointers to layers
     std::vector<Layer *> _layers;
     //Sizes of layers
-    vector<int> _sizes;
+    std::vector<int> _sizes;
 	
 };
 
