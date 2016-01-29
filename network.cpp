@@ -64,13 +64,9 @@ void Network::Train(vector< Eigen::VectorXd> const& X, vector<int> const& Y,
 
     //For each epoch
     for (int j = 0; j < epochs; ++j) {
-        //Set all nabla values to 0 for each layer
-        for (int iLayer = 0; iLayer < _layers.size(); iLayer++) {
-            _layers[iLayer]->CleanNabla();
-        }
         //Shuffle index
         random_shuffle(index.begin(), index.end());
-        for (int k = 0; k < n/100; k+=miniBatchSize) {
+        for (int k = 0; k < n; k+=miniBatchSize) {
             //Create minibatch
             vector<VectorXd> xMiniBatch(miniBatchSize);
             vector<int> yMiniBatch(miniBatchSize);
@@ -90,11 +86,16 @@ void Network::UpdateMiniBatch(vector<VectorXd> x, vector<int> y, double eta)
 {
     //Shortcut to number of layers
     int nLayers = _layers.size();
+    //Set all nabla values to 0 for each layer
+    for (int l = 0; l < nLayers; l++) {
+        _layers[l]->CleanNabla();
+    }
     //for each training data in minibatch
     for (int i = 0; i < y.size(); ++i) {
         //Perform feed forward step
         Predict(x[i]);
         //Compute value of delta
+        cout << _layers[nLayers -1]->GetActivation() << endl; //PROBLEME !!
         VectorXd delta = InitBackProp(y[i], _layers[nLayers -1]->GetActivation());
         _layers[nLayers-1]->FeedBackward(delta); //Use equation (BP1)
         for (int j = nLayers - 2; j >= 0; --j) {

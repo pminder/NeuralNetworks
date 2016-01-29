@@ -29,6 +29,7 @@ Layer::Layer(int nNeurons, int nInput)
 
 Layer::~Layer()
 {
+    delete _activationFunction;
 }
 
 void Layer::InitWeightsBiases()
@@ -36,14 +37,16 @@ void Layer::InitWeightsBiases()
     //Initialize random number generator
     default_random_engine generator;
     normal_distribution<double> distribution(0.0,1.0);
-    //Fill biases
+    //Fill biases and set _nabla_b to 0
     for (int i = 0; i < _nNeurons; ++i) {
         _biases(i) = distribution(generator);
+        _nabla_b(i) = 0;
     }
-    //Fill weights
+    //Fill weights and set _nabla_w to 0
     for (int i = 0; i < _nNeurons; ++i) {
         for (int j = 0; j < _nInput; ++j) {
             _weights(i, j) = distribution(generator);
+            _nabla_w(0, 0) = 0;
         }
     }
 }
