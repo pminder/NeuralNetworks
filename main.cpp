@@ -23,7 +23,6 @@ int main(int argc, char const *argv[])
     //Initialize the network
     Network network(sizes);
 
-
    //Create dataloader instance
 	DataMnist database(argv[1]);
     //Load labels
@@ -39,10 +38,7 @@ int main(int argc, char const *argv[])
 
 
     //Train network
-    network.Train(database.GetTrainImages(), database.GetTrainLabels());
-
-
-    return 0;
+    network.Train(database.GetTrainImages(), database.GetTrainLabels(), 5);
 
     //Compute number of errors
     double errors(0);

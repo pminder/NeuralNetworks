@@ -34,7 +34,7 @@ class Layer
         //Accessors
         //(OPTIMIZATION: do not copy ?)
         Eigen::VectorXd GetActivation();
-        Eigen::VectorXd GetWeights();
+        Eigen::MatrixXd GetWeights();
         Eigen::VectorXd GetDelta();
 
     private:
@@ -54,7 +54,7 @@ class Layer
         //Sum of nabla_b
         Eigen::VectorXd _nabla_b;
         //Sum of nabla_w
-        Eigen::VectorXd _nabla_w;
+        Eigen::MatrixXd _nabla_w;
         //Activation function
         Function * _activationFunction;
 

@@ -70,7 +70,7 @@ void Network::Train(vector< Eigen::VectorXd> const& X, vector<int> const& Y,
         }
         //Shuffle index
         random_shuffle(index.begin(), index.end());
-        for (int k = 0; k < n; k+=miniBatchSize) {
+        for (int k = 0; k < n/100; k+=miniBatchSize) {
             //Create minibatch
             vector<VectorXd> xMiniBatch(miniBatchSize);
             vector<int> yMiniBatch(miniBatchSize);

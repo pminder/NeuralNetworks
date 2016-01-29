@@ -65,7 +65,7 @@ VectorXd Layer::GetActivation()
     return _activation;
 }
 
-VectorXd Layer::GetWeights()
+MatrixXd Layer::GetWeights()
 {
     return _weights;
 }
@@ -98,7 +98,7 @@ void Layer::ComputeNabla(VectorXd activations)
     _nabla_b += _delta;
 
     //Add nabla_w to _nabla_w
-    _nabla_w += activations * _delta;
+    _nabla_w += _delta * activations.transpose();
 }
 
 void Layer::CleanNabla()
