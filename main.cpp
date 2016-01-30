@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
 
 
     //Train network
-    network.Train(database.GetTrainImages(), database.GetTrainLabels(), 1);
+    network.Train(database.GetTrainImages(), database.GetTrainLabels(), 2);
 
     //Compute number of errors
     double errors(0);

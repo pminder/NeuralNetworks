@@ -1,4 +1,5 @@
 #include "functions.h"
+#include <iostream>
 
 Function::Function()
 {
@@ -29,5 +30,10 @@ double Sigmoid::fnt(double x) const
 
 double Sigmoid::prime(double x) const
 {
-    return exp(-x)/((1 + exp(-x))*(1 + exp(-x)));
+    double t =  ( exp(-x)/( 1.+ exp(-x)) ) * ( 1./(1. + exp(-x)));
+    if (t != t) 
+    {
+        return 0.;
+    }
+    return t;
 }

@@ -95,7 +95,6 @@ void Network::UpdateMiniBatch(vector<VectorXd> x, vector<int> y, double eta)
         //Perform feed forward step
         Predict(x[i]);
         //Compute value of delta
-        cout << _layers[nLayers -1]->GetActivation() << endl; //PROBLEME !!
         VectorXd delta = InitBackProp(y[i], _layers[nLayers -1]->GetActivation());
         _layers[nLayers-1]->FeedBackward(delta); //Use equation (BP1)
         for (int j = nLayers - 2; j >= 0; --j) {
