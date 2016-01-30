@@ -133,7 +133,7 @@ int DataMnist::loadImages(int beg)
 						//It is more practical since we want our pixel coloration to take positive value
 						unsigned char pix = 0;
 						file.read((char*)&pix,sizeof(pix));
-						_xtrain[i](count)= (double) pix;
+						_xtrain[i](count)= (double) pix / 255.;
 						++ count;
 
 					}
@@ -159,7 +159,7 @@ int DataMnist::loadImages(int beg)
 						//it does not matter since they both correspond to a byte memorywise
 						unsigned char pix = 0;
 						file.read((char*)&pix,sizeof(pix));
-						_xtest[i](count)= (double) pix;
+						_xtest[i](count)= (double) pix / 255.;
 						++ count;
 
 					}

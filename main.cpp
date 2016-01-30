@@ -36,7 +36,6 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-
     //Train network
     network.Train(database.GetTrainImages(), database.GetTrainLabels(), 2);
 
