@@ -1,0 +1,64 @@
+Labels loaded successfully
+Labels loaded successfully
+Images loaded successfully
+Images loaded successfully
+Training... Epoch 0
+Errors: 10.08%
+Training... Epoch 1
+Errors: 7.97%
+Training... Epoch 2
+Errors: 6.97%
+Training... Epoch 3
+Errors: 6.76%
+Training... Epoch 4
+Errors: 6.69%
+Training... Epoch 5
+Errors: 6.24%
+Training... Epoch 6
+Errors: 6.57%
+Training... Epoch 7
+Errors: 5.77%
+Training... Epoch 8
+Errors: 5.93%
+Training... Epoch 9
+Errors: 5.75%
+Training... Epoch 10
+Errors: 5.62%
+Training... Epoch 11
+Errors: 6.11%
+Training... Epoch 12
+Errors: 6.17%
+Training... Epoch 13
+Errors: 5.63%
+Training... Epoch 14
+Errors: 5.53%
+Training... Epoch 15
+Errors: 5.96%
+Training... Epoch 16
+Errors: 5.95%
+Training... Epoch 17
+Errors: 5.63%
+Training... Epoch 18
+Errors: 6.81%
+Training... Epoch 19
+Errors: 5.8%
+Training... Epoch 20
+Errors: 5.67%
+Training... Epoch 21
+Errors: 5.72%
+Training... Epoch 22
+Errors: 5.52%
+Training... Epoch 23
+Errors: 5.44%
+Training... Epoch 24
+Errors: 5.6%
+Training... Epoch 25
+Errors: 5.7%
+Training... Epoch 26
+Errors: 5.76%
+Training... Epoch 27
+Errors: 5.46%
+Training... Epoch 28
+Errors: 5.37%
+Training... Epoch 29
+Errors: 5.55%
