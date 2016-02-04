@@ -29,11 +29,12 @@ Network::~Network()
 
 int Network::Predict(VectorXd const& X)
 {
+    //Initialize predicted label to -1
     int label(-1);
 
     //Feedforward X in first layer
     _layers[0]->FeedForward(X);
-    //For all other layers
+    //For all other layers, feedforward X too
     for (int i= 1; i< _layers.size(); ++i) {
         _layers[i]->FeedForward(_layers[i-1]->GetActivation());
     }
@@ -44,17 +45,10 @@ int Network::Predict(VectorXd const& X)
     return label;
 }
 
-//IDEE : surcharge d'opérateur pour gérer les cas où l'on passe 
-//une ou plusieurs images à predict...
-//void Network::predict(vector< Eigen::VectorXd>  const& X)
-//{
-//
-//}
-
 void Network::Train(vector< Eigen::VectorXd> const& X, vector<int> const& Y, 
         int epochs, int miniBatchSize, double eta)
 {
-    //shortcut to number of training data
+    //Shortcut to number of training data
     int n = X.size();
     //Index of elements
     vector<int> index(n);
@@ -64,7 +58,7 @@ void Network::Train(vector< Eigen::VectorXd> const& X, vector<int> const& Y,
 
     //For each epoch
     for (int j = 0; j < epochs; ++j) {
-        //Shuffle index
+        //Shuffle index (for stochastic descent gradient algorithm)
         random_shuffle(index.begin(), index.end());
         for (int k = 0; k < n; k+=miniBatchSize) {
             //Create minibatch
@@ -77,8 +71,6 @@ void Network::Train(vector< Eigen::VectorXd> const& X, vector<int> const& Y,
             //Update weights and biases
             UpdateMiniBatch(xMiniBatch, yMiniBatch, eta);
         }
-
-        cout << "Epoch n°" << j << " completed" << endl;
     }
 }
 
@@ -90,21 +82,23 @@ void Network::UpdateMiniBatch(vector<VectorXd> x, vector<int> y, double eta)
     for (int l = 0; l < nLayers; l++) {
         _layers[l]->CleanNabla();
     }
-    //for each training data in minibatch
+    //For each training data in minibatch
     for (int i = 0; i < y.size(); ++i) {
         //Perform feed forward step
         Predict(x[i]);
         //Compute value of delta
         VectorXd delta = InitBackProp(y[i], _layers[nLayers -1]->GetActivation());
-        _layers[nLayers-1]->FeedBackward(delta); //Use equation (BP1)
+        //Use equation (BP1)
+        _layers[nLayers-1]->FeedBackward(delta); 
         for (int j = nLayers - 2; j >= 0; --j) {
             //Use equation (BP2)
             _layers[j]->FeedBackward(_layers[j+1]->GetWeights(), _layers[j+1]->GetDelta());
         }
 
+        //Use equations (BP3) + (BP4) to compute _nabla in first layer
         _layers[0]->ComputeNabla(x[i]); 
         for (int j = 1; j < nLayers; ++j) {
-            //Use equations (BP3) + (BP4)
+            //Use equations (BP3) + (BP4) all other layers
             _layers[j]->ComputeNabla(_layers[j-1]->GetActivation()); 
         }
     }
@@ -129,7 +123,6 @@ VectorXd Network::InitBackProp(int y, VectorXd activations)
     //Set yth value to 1.0
     vectorizedY(y) = 1.0;
 
+    //Return derivative of cost function applied in activations
     return activations - vectorizedY;
 }
-
-

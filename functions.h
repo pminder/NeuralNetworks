@@ -4,26 +4,21 @@
 #include <string>
 #include <math.h>
 
-//Classe abstraite Fonction
+//Abstract class function
 class Function
 {
 public:
 	Function();
 	virtual ~Function();
 
-	//Fonction de base
+	//Function
 	virtual double fnt(double x) const = 0;
-	//Dérivée
+	//Derivative function
 	virtual double prime(double x) const = 0;
-
-protected:
-	//Nom de la fonction (pour l'affichage)
-	std::string name;
 	
 };
 
-//La classe Sigmoid hérite de la classe fonction
-//mais celle-ci n'est pas abstraite
+//Sigmoid class inherits from Function
 class Sigmoid : public Function
 {
 public:

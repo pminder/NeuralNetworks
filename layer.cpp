@@ -19,7 +19,7 @@ Layer::Layer(int nNeurons, int nInput)
     _delta = VectorXd(_nNeurons);
     _nabla_b = VectorXd(_nNeurons);
     _nabla_w = MatrixXd(_nNeurons, _nInput);
-    //Activation function creation
+    //Activation function allocation
     _activationFunction = new Sigmoid;
 
     //Initialize weights and biases using random normal distribution
@@ -37,16 +37,16 @@ void Layer::InitWeightsBiases()
     //Initialize random number generator
     default_random_engine generator;
     normal_distribution<double> distribution(0.0,1.0);
-    //Fill biases and set _nabla_b to 0
+    //Fill in  biases and set _nabla_b to 0
     for (int i = 0; i < _nNeurons; ++i) {
         _biases(i) = distribution(generator);
         _nabla_b(i) = 0;
     }
-    //Fill weights and set _nabla_w to 0
+    //Fill in weights and set _nabla_w to 0
     for (int i = 0; i < _nNeurons; ++i) {
         for (int j = 0; j < _nInput; ++j) {
             _weights(i, j) = distribution(generator);
-            _nabla_w(0, 0) = 0;
+            _nabla_w(i, j) = 0;
         }
     }
 }
@@ -63,24 +63,11 @@ void Layer::FeedForward(VectorXd const& input)
 
 }
 
-VectorXd Layer::GetActivation()
-{
-    return _activation;
-}
-
-MatrixXd Layer::GetWeights()
-{
-    return _weights;
-}
-
-VectorXd Layer::GetDelta()
-{
-    return _delta;
-}
-
 void Layer::FeedBackward(VectorXd delta)
 {
-    //Using equation (BP1), compute _delta^L
+    //Using equation (BP1), compute _delta^L: partial derivatives of cost
+    //function with respect to weighted input
+    //(only used for output layer)
     for (int i = 0; i < _weightedInput.size(); ++i) {
         _delta(i) = _activationFunction->prime(_weightedInput(i)) * delta(i);
     }
@@ -88,7 +75,9 @@ void Layer::FeedBackward(VectorXd delta)
 
 void Layer::FeedBackward(MatrixXd w, VectorXd delta)
 {
-    //Using equation (BP2), compute _delta^l
+    //Using equation (BP2), compute _delta^l: partial derivatives of cost
+    //function with respect to weighted input
+    //(used for all layers except output layer)
     VectorXd temp = w.transpose() * delta;
     for (int i = 0; i < _weightedInput.size(); ++i) {
         _delta(i) = _activationFunction->prime(_weightedInput(i)) * temp(i);
@@ -109,12 +98,30 @@ void Layer::CleanNabla()
     //Set _nabla_b to 0
     _nabla_b -= _nabla_b;
 
-    //Set _nabla_w
+    //Set _nabla_w to 0
     _nabla_w -= _nabla_w;
 }
 
 void Layer::UpdateWeightsBiases(double eta, int miniBatchSize)
 {
+    //Update weights and biases in current layer using mean of _nablas
+    //as an approximation of real _nabla value
     _weights -= (eta/miniBatchSize) * _nabla_w;
     _biases -= (eta/miniBatchSize) * _nabla_b;
+}
+
+//Accessors
+VectorXd Layer::GetActivation()
+{
+    return _activation;
+}
+
+MatrixXd Layer::GetWeights()
+{
+    return _weights;
+}
+
+VectorXd Layer::GetDelta()
+{
+    return _delta;
 }

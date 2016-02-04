@@ -9,18 +9,13 @@
 using namespace std;
 using namespace Eigen;
 
-DataMnist::DataMnist(void)
-{
-	_path = "C:/Users/Dimitri/Desktop/My stuff/Taff/C++/Projet C++/MNIST/";
-	initFileNames();
-	initSizes();
-}
-
-
 DataMnist::DataMnist(std::string data_path)
 {
+    //Initialize DataMnist loader according to directory passed as argument
 	_path = data_path;
+    //Initialize default file names
 	initFileNames();
+    //Initialize sizes of arrays according to MNIST specifications
 	initSizes();
 }
 

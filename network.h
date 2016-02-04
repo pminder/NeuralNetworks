@@ -9,22 +9,20 @@
 class Network
 {
 public:
-	//Constructeur
 	Network(std::vector<int> const& sizes);
-	//Destructeur
 	~Network();
 
-	//Fonction de classification pour une image
+	//Classification function for one image
 	int Predict(Eigen::VectorXd const& X);
 
-	//Fonction d'apprentissage
+	//Training function
 	void Train(std::vector< Eigen::VectorXd>  const& X, std::vector<int> const& Y,
             int epochs = 30, int miniBatchSize = 10, double eta = 3.0);
 
     //Update weights and biases using specified minibatch
     void UpdateMiniBatch(std::vector<Eigen::VectorXd> x, std::vector<int> y, double eta);
 
-    //Compute first value used in back propagation algorithm
+    //Compute first value used in backpropagation algorithm
     Eigen::VectorXd InitBackProp(int y, Eigen::VectorXd activations);
 
 

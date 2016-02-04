@@ -30,10 +30,5 @@ double Sigmoid::fnt(double x) const
 
 double Sigmoid::prime(double x) const
 {
-    double t =  ( exp(-x)/( 1.+ exp(-x)) ) * ( 1./(1. + exp(-x)));
-    if (t != t) 
-    {
-        return 0.;
-    }
-    return t;
+    return ( exp(-x)/( 1.+ exp(-x)) ) * ( 1./(1. + exp(-x)));
 }
