@@ -1,3 +1,8 @@
+//Number of neurons in each layer: 
+// 784, 30, 10
+//ie one hidden layer of 30 hidden units
+//Run time: ~20 min 
+
 Labels loaded successfully
 Labels loaded successfully
 Images loaded successfully
